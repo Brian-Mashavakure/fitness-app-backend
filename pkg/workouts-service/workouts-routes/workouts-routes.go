@@ -9,4 +9,8 @@ func WorkoutsRoutes(router *gin.Engine) {
 	api := router.Group("api/fitness")
 
 	api.POST("/createworkout", workouts_handlers.CreateWorkoutHandler)
+
+	api.GET("/getworkouts/:username", workouts_handlers.GetWorkoutsHandler)
+
+	api.GET("/getworkout/:username/:workout_nickname", workouts_handlers.GetSingleWorkoutHandler)
 }
