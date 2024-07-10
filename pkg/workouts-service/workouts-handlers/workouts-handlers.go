@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
+	"strconv"
 )
 
 type Workout struct {
@@ -192,4 +193,47 @@ func GetSingleWorkoutHandler(c *gin.Context) {
 
 	c.Header("Content-Type", "application/json")
 	c.String(http.StatusOK, string(workoutJson))
+}
+
+func UpdateStreakHandler(c *gin.Context) {
+	username := c.Param("username")
+	workout_nickname := c.Param("workout_nickname")
+
+	var workout Workout
+	result := database.Db.Select("streak").Where("username = $1 AND workout_nickname = $2", username, workout_nickname).First(&workout)
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Ran into a problem getting the streak"})
+		return
+	}
+
+	streak := workout.STREAK
+	fmt.Println(streak)
+
+	//convert streak to string
+	intStreak, intErr := strconv.Atoi(streak)
+	if intErr != nil {
+		fmt.Printf("Error trying to parse streak value: %v\n", intErr)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Problems parsing the streak"})
+		return
+	}
+
+	newStreak := intStreak + 1
+
+	updatedStreak := strconv.Itoa(newStreak)
+	fmt.Println(updatedStreak)
+
+	//update the database
+	updateResult := database.Db.
+		Model(&Workout{}).
+		Where("username = ? AND workout_nickname = ?", username, workout_nickname).
+		Update("streak", updatedStreak)
+	if updateResult.Error != nil {
+		fmt.Printf("Error trying to update the streak: %v\n", result.Error)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Problem updating the streak"})
+		return
+	} else {
+		c.JSON(http.StatusOK, gin.H{"message": "Successfully updated streak"})
+	}
+
 }

@@ -13,7 +13,7 @@ var Db *gorm.DB
 func DatabaseConnector() {
 	err := godotenv.Load()
 	if err != nil {
-		fmt.Println("Error occured on env file please check")
+		fmt.Println("Error occurred on env file please check")
 	}
 
 	host := os.Getenv("HOST")
@@ -33,6 +33,4 @@ func DatabaseConnector() {
 	}
 
 	Db = db
-
-	fmt.Printf("Connected To Database Successfully %s\n", Db)
 }
