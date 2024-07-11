@@ -1,7 +1,7 @@
 package workouts_routes
 
 import (
-	"github.com/Brian-Mashavakure/fitness-app-backend/pkg/workouts-service/workouts-handlers"
+	workouts_handlers "github.com/Brian-Mashavakure/fitness-app-backend/pkg/workouts-service/workouts-handlers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,4 +15,6 @@ func WorkoutsRoutes(router *gin.Engine) {
 	api.GET("/getworkout/:username/:workout_nickname", workouts_handlers.GetSingleWorkoutHandler)
 
 	api.PUT("/updatestreak/:username/:workout_nickname", workouts_handlers.UpdateStreakHandler)
+
+	api.PUT("/deleteworkout/:username/:workout_nickname", workouts_handlers.DeleteWorkoutHandler)
 }

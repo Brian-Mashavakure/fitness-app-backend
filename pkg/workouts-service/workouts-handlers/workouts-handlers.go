@@ -75,6 +75,7 @@ func CreateWorkoutHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Workout Created Successfully"})
 }
 
+// TODO:Add deleted at clause to query
 func GetWorkoutsHandler(c *gin.Context) {
 	username := c.Param("username")
 
@@ -238,3 +239,6 @@ func UpdateStreakHandler(c *gin.Context) {
 	}
 
 }
+
+// TODO: Add delete workout handler
+func DeleteWorkoutHandler(C *gin.Context) {}
