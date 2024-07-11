@@ -3,11 +3,12 @@ package workouts_handlers
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"strconv"
+
 	"github.com/Brian-Mashavakure/fitness-app-backend/pkg/database"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"net/http"
-	"strconv"
 )
 
 type Workout struct {
