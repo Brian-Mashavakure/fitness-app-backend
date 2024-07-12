@@ -6,9 +6,11 @@ import (
 )
 
 func GoalsRoutes(router *gin.Engine) {
-	api := router.Group("api/fitnes")
+	api := router.Group("api/fitness")
 
 	api.POST("/addgoal", goals_handlers.CreateGoalHandler)
+
 	api.GET("/getgoals/:username", goals_handlers.GetGoalsHandler)
+
 	api.PUT("/deletegoal/:title", goals_handlers.DeleteGoalHandler)
 }
