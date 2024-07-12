@@ -76,7 +76,6 @@ func CreateWorkoutHandler(c *gin.Context) {
 
 }
 
-// TODO:Add deleted at clause to query
 func GetWorkoutsHandler(c *gin.Context) {
 	username := c.Param("username")
 
@@ -144,7 +143,6 @@ func UpdateStreakHandler(c *gin.Context) {
 
 }
 
-// TODO: Add delete workout handler
 func DeleteWorkoutHandler(c *gin.Context) {
 	username := c.Param("username")
 	workout_nickname := c.Param("workout_nickname")

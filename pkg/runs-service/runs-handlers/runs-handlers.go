@@ -50,7 +50,6 @@ func CreateRunHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Successfully created run"})
 }
 
-// TODO:Add deleted at clause to query
 func GetRunsHandler(c *gin.Context) {
 	//get username
 	username := c.Param("username")
@@ -105,7 +104,6 @@ func LeaderboardHandler(c *gin.Context) {
 
 }
 
-// TODO: Add delete run handler
 func DeleteRunHandler(c *gin.Context) {
 	id := c.Param("id")
 
