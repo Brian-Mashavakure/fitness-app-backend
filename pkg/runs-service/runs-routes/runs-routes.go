@@ -9,8 +9,11 @@ func RunsRoutes(router *gin.Engine) {
 	api := router.Group("api/fitness")
 
 	api.POST("/createrun", runs_handlers.CreateRunHandler)
+
 	api.GET("/getruns/:username", runs_handlers.GetRunsHandler)
+
 	api.GET("/runsleaderboard", runs_handlers.LeaderboardHandler)
+
 	api.PUT("/deleterun/:id", runs_handlers.DeleteRunHandler)
 
 }

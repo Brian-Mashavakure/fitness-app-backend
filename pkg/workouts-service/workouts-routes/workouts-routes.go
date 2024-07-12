@@ -12,8 +12,6 @@ func WorkoutsRoutes(router *gin.Engine) {
 
 	api.GET("/getworkouts/:username", workouts_handlers.GetWorkoutsHandler)
 
-	api.GET("/getworkout/:username/:workout_nickname", workouts_handlers.GetSingleWorkoutHandler)
-
 	api.PUT("/updatestreak/:username/:workout_nickname", workouts_handlers.UpdateStreakHandler)
 
 	api.PUT("/deleteworkout/:username/:workout_nickname", workouts_handlers.DeleteWorkoutHandler)

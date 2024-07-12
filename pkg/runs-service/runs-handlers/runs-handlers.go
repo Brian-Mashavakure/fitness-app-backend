@@ -55,40 +55,16 @@ func GetRunsHandler(c *gin.Context) {
 	//get username
 	username := c.Param("username")
 
-	rows, rowsErr := database.Db.Table("runs").
-		Select("set_distance, start_time, end_time, covered_distance, time_taken, username").
-		Where("username = ?", username).
-		Rows()
-	if rowsErr != nil {
-		fmt.Println("Problems trying to query database for runs")
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Problems trying to query the database"})
-		return
-	}
-
-	defer rows.Close()
-
 	var runs []Run
 
-	for rows.Next() {
-		var set_distance string
-		var start_time string
-		var end_time string
-		var covered_distance string
-		var time_taken string
-		var username string
-
-		if err := rows.Scan(&set_distance, &start_time, &end_time, &covered_distance, &time_taken, &username); err != nil {
-			fmt.Println("Problems trying to parse runs")
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Problems trying to return the runs"})
-			return
-		}
-
-		runs = append(runs, Run{SET_DISTANCE: set_distance, START_TIME: start_time, END_TIME: end_time, COVERED_DISTANCE: covered_distance, TIME_TAKEN: time_taken, USERNAME: username})
-	}
-
-	if err := rows.Err(); err != nil {
-		fmt.Println("Problems trying to parse runs")
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Problems trying to return the runs"})
+	result := database.Db.
+		Table("runs").
+		Select("id, set_distance, start_time, end_time, covered_distance, time_taken, username").
+		Where("username = ? AND deleted_at IS NULL", username).
+		Scan(&runs)
+	if result.Error != nil {
+		fmt.Println("Problems trying to query database for runs")
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Problems trying to query the database"})
 		return
 	}
 
@@ -105,37 +81,15 @@ func GetRunsHandler(c *gin.Context) {
 
 // return running leaderboard for community feature
 func LeaderboardHandler(c *gin.Context) {
-	rows, rowsErr := database.Db.Table("runs").
-		Select("covered_distance, time_taken, username").
-		Order("covered_distance asc").
-		Rows()
-	if rowsErr != nil {
-		fmt.Println("Problems trying to query database for leaderboard")
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Problems trying to query the database"})
-		return
-	}
-
-	defer rows.Close()
-
 	var leaderboard []Run
 
-	for rows.Next() {
-		var covered_distance string
-		var time_taken string
-		var username string
-
-		if err := rows.Scan(&covered_distance, &time_taken, &username); err != nil {
-			fmt.Println("Problems trying to parse leaderboard")
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Problems trying to return the leaderboard"})
-			return
-		}
-
-		leaderboard = append(leaderboard, Run{COVERED_DISTANCE: covered_distance, TIME_TAKEN: time_taken, USERNAME: username})
-	}
-
-	if err := rows.Err(); err != nil {
-		fmt.Println("Problems trying to parse leaderboard")
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Problems trying to return the leaderboard"})
+	result := database.Db.Table("runs").
+		Select("id,set_distance, start_time, end_time, covered_distance, time_taken, username").
+		Order("covered_distance desc").
+		Scan(&leaderboard)
+	if result.Error != nil {
+		fmt.Println("Problems trying to query database for leaderboard")
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Problems trying to query the database"})
 		return
 	}
 
@@ -152,4 +106,18 @@ func LeaderboardHandler(c *gin.Context) {
 }
 
 // TODO: Add delete run handler
-func DeleteRunHandler(c *gin.Context) {}
+func DeleteRunHandler(c *gin.Context) {
+	id := c.Param("id")
+
+	result := database.Db.
+		Where("id = ?", id).
+		Delete(&Run{})
+	if result.Error != nil {
+		fmt.Println("Failed to delete run")
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete run"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted run"})
+
+}
