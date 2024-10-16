@@ -6,6 +6,7 @@ import (
 	goals_routes "github.com/Brian-Mashavakure/fitness-app-backend/pkg/goals-service/goals-routes"
 	runs_handlers "github.com/Brian-Mashavakure/fitness-app-backend/pkg/runs-service/runs-handlers"
 	runs_routes "github.com/Brian-Mashavakure/fitness-app-backend/pkg/runs-service/runs-routes"
+	token_routes "github.com/Brian-Mashavakure/fitness-app-backend/pkg/token-service/token-routes"
 	workouts_handlers "github.com/Brian-Mashavakure/fitness-app-backend/pkg/workouts-service/workouts-handlers"
 	workouts_routes "github.com/Brian-Mashavakure/fitness-app-backend/pkg/workouts-service/workouts-routes"
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,7 @@ func main() {
 	workouts_routes.WorkoutsRoutes(router)
 	runs_routes.RunsRoutes(router)
 	goals_routes.GoalsRoutes(router)
+	token_routes.TokenRoutes(router)
 
 	router.Run("localhost:8080")
 
