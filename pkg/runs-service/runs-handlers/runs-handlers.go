@@ -18,6 +18,7 @@ type Run struct {
 	END_TIME         string `json:"end_time"`
 	COVERED_DISTANCE string `json:"covered_distance"`
 	TIME_TAKEN       string `json:"time_taken"`
+	RUN_DATE         string `json:"run_date"`
 	USERNAME         string `json:"username"`
 }
 
@@ -28,6 +29,7 @@ func CreateRunHandler(c *gin.Context) {
 	end_time := c.Request.FormValue("end_time")
 	covered_distance := c.Request.FormValue("covered_distance")
 	time_taken := c.Request.FormValue("time_taken")
+	run_date := c.Request.FormValue("run_date")
 	username := c.Request.FormValue("username")
 
 	//create run object
@@ -37,6 +39,7 @@ func CreateRunHandler(c *gin.Context) {
 		END_TIME:         end_time,
 		COVERED_DISTANCE: covered_distance,
 		TIME_TAKEN:       time_taken,
+		RUN_DATE:         run_date,
 		USERNAME:         username,
 	}
 	//run create method on database
@@ -58,7 +61,7 @@ func GetRunsHandler(c *gin.Context) {
 
 	result := database.Db.
 		Table("runs").
-		Select("id, set_distance, start_time, end_time, covered_distance, time_taken, username").
+		Select("id, set_distance, start_time, end_time, covered_distance, time_taken, run_date, username").
 		Where("username = ? AND deleted_at IS NULL", username).
 		Scan(&runs)
 	if result.Error != nil {
@@ -83,7 +86,7 @@ func LeaderboardHandler(c *gin.Context) {
 	var leaderboard []Run
 
 	result := database.Db.Table("runs").
-		Select("id,set_distance, start_time, end_time, covered_distance, time_taken, username").
+		Select("id,set_distance, start_time, end_time, covered_distance, time_taken, run_date, username").
 		Order("covered_distance desc").
 		Scan(&leaderboard)
 	if result.Error != nil {

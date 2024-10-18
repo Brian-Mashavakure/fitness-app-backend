@@ -28,6 +28,7 @@ type Workout struct {
 	COOLDOWN_ACTIVITY string `json:"cooldown_activity"`
 	COOLDOWN_TIME     string `json:"cooldown_time"`
 	STREAK            string `json:"streak"`
+	WORKOUT_DATE      string `json:"workout_date"`
 	USERNAME          string `json:"username"`
 }
 
@@ -46,6 +47,7 @@ func CreateWorkoutHandler(c *gin.Context) {
 	flex_time := c.Request.FormValue("flex_time")
 	cooldown_activity := c.Request.FormValue("cooldown_activity")
 	cooldown_time := c.Request.FormValue("cooldown_time")
+	workout_date := c.Request.FormValue("workout_date")
 	streak := "0"
 	username := c.Request.FormValue("username")
 
@@ -63,6 +65,7 @@ func CreateWorkoutHandler(c *gin.Context) {
 		FLEX_TIME:         flex_time,
 		COOLDOWN_ACTIVITY: cooldown_activity,
 		COOLDOWN_TIME:     cooldown_time,
+		WORKOUT_DATE:      workout_date,
 		STREAK:            streak,
 		USERNAME:          username,
 	}
@@ -81,7 +84,7 @@ func GetWorkoutsHandler(c *gin.Context) {
 
 	var workouts []Workout
 	result := database.Db.Table("workouts").
-		Select("workout_nickname, warmup_activity, warmup_time, cardio_activity, cardio_time, strength_activity, strength_time, core_activity, core_time, flex_activity, flex_time, cooldown_activity, cooldown_time, streak").
+		Select("workout_nickname, warmup_activity, warmup_time, cardio_activity, cardio_time, strength_activity, strength_time, core_activity, core_time, flex_activity, flex_time, cooldown_activity, cooldown_time, streak, workout_date").
 		Where("username = ? AND deleted_at IS NULL", username).
 		Scan(&workouts)
 	if result.Error != nil {
