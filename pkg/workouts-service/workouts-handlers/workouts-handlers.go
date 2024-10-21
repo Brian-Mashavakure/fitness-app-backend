@@ -80,7 +80,7 @@ func CreateWorkoutHandler(c *gin.Context) {
 }
 
 func GetWorkoutsHandler(c *gin.Context) {
-	username := c.Param("username")
+	username := c.Request.FormValue("username")
 
 	var workouts []Workout
 	result := database.Db.Table("workouts").
@@ -104,8 +104,8 @@ func GetWorkoutsHandler(c *gin.Context) {
 }
 
 func UpdateStreakHandler(c *gin.Context) {
-	username := c.Param("username")
-	workout_nickname := c.Param("workout_nickname")
+	username := c.Request.FormValue("username")
+	workout_nickname := c.Request.FormValue("workout_nickname")
 
 	var workout Workout
 	result := database.Db.Select("streak").Where("username = $1 AND workout_nickname = $2", username, workout_nickname).First(&workout)
@@ -147,8 +147,8 @@ func UpdateStreakHandler(c *gin.Context) {
 }
 
 func DeleteWorkoutHandler(c *gin.Context) {
-	username := c.Param("username")
-	workout_nickname := c.Param("workout_nickname")
+	username := c.Request.FormValue("username")
+	workout_nickname := c.Request.FormValue("workout_nickname")
 
 	result := database.Db.Where("username = ? AND workout_nickname = ?", username, workout_nickname).Delete(&Workout{})
 	if result.Error != nil {

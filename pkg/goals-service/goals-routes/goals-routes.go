@@ -11,7 +11,7 @@ func GoalsRoutes(router *gin.Engine) {
 
 	api.POST("/addgoal", token_moddleware.TokenMiddleware(), goals_handlers.CreateGoalHandler)
 
-	api.GET("/getgoals/:username", token_moddleware.TokenMiddleware(), goals_handlers.GetGoalsHandler)
+	api.GET("/getgoals", token_moddleware.TokenMiddleware(), goals_handlers.GetGoalsHandler)
 
-	api.PUT("/deletegoal/:title", token_moddleware.TokenMiddleware(), goals_handlers.DeleteGoalHandler)
+	api.PUT("/deletegoal", token_moddleware.TokenMiddleware(), goals_handlers.DeleteGoalHandler)
 }

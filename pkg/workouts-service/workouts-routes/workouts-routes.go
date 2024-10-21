@@ -11,9 +11,9 @@ func WorkoutsRoutes(router *gin.Engine) {
 
 	api.POST("/createworkout", token_moddleware.TokenMiddleware(), workouts_handlers.CreateWorkoutHandler)
 
-	api.GET("/getworkouts/:username", token_moddleware.TokenMiddleware(), workouts_handlers.GetWorkoutsHandler)
+	api.GET("/getworkouts", token_moddleware.TokenMiddleware(), workouts_handlers.GetWorkoutsHandler)
 
-	api.PUT("/updatestreak/:username/:workout_nickname", token_moddleware.TokenMiddleware(), workouts_handlers.UpdateStreakHandler)
+	api.PUT("/updatestreak", token_moddleware.TokenMiddleware(), workouts_handlers.UpdateStreakHandler)
 
-	api.PUT("/deleteworkout/:username/:workout_nickname", token_moddleware.TokenMiddleware(), workouts_handlers.DeleteWorkoutHandler)
+	api.PUT("/deleteworkout", token_moddleware.TokenMiddleware(), workouts_handlers.DeleteWorkoutHandler)
 }

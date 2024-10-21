@@ -11,10 +11,10 @@ func RunsRoutes(router *gin.Engine) {
 
 	api.POST("/createrun", token_moddleware.TokenMiddleware(), runs_handlers.CreateRunHandler)
 
-	api.GET("/getruns/:username", token_moddleware.TokenMiddleware(), runs_handlers.GetRunsHandler)
+	api.GET("/getruns", token_moddleware.TokenMiddleware(), runs_handlers.GetRunsHandler)
 
 	api.GET("/runsleaderboard", token_moddleware.TokenMiddleware(), runs_handlers.LeaderboardHandler)
 
-	api.PUT("/deleterun/:id", token_moddleware.TokenMiddleware(), runs_handlers.DeleteRunHandler)
+	api.PUT("/deleterun", token_moddleware.TokenMiddleware(), runs_handlers.DeleteRunHandler)
 
 }

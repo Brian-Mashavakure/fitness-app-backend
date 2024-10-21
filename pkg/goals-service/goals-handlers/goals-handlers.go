@@ -49,7 +49,7 @@ func CreateGoalHandler(c *gin.Context) {
 }
 
 func GetGoalsHandler(c *gin.Context) {
-	username := c.Param("username")
+	username := c.Request.FormValue("username")
 
 	var goals []Goal
 	result := database.Db.Table("goals").
@@ -74,7 +74,7 @@ func GetGoalsHandler(c *gin.Context) {
 }
 
 func DeleteGoalHandler(c *gin.Context) {
-	title := c.Param("title")
+	title := c.Request.FormValue("title")
 
 	result := database.Db.
 		Where("title = ?", title).

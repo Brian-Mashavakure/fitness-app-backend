@@ -55,7 +55,7 @@ func CreateRunHandler(c *gin.Context) {
 
 func GetRunsHandler(c *gin.Context) {
 	//get username
-	username := c.Param("username")
+	username := c.Request.FormValue("username")
 
 	var runs []Run
 
@@ -108,7 +108,7 @@ func LeaderboardHandler(c *gin.Context) {
 }
 
 func DeleteRunHandler(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Request.FormValue("id")
 
 	result := database.Db.
 		Where("id = ?", id).
